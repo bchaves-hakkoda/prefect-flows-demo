@@ -1,6 +1,12 @@
 from prefect import flow
+from prefect_dbt.cloud import DbtCloudCredentials, DbtCloudJob
+from prefect_dbt.cloud.jobs import run_dbt_cloud_job
 
 
-@flow(log_prints=True)
-def my_flow():
-    print("I'm a flow from a GitHub repo! And I've changed!")
+@flow
+def flow():
+    dbt_cloud_credentials = DbtCloudCredentials.load("NESTLE snowflake")
+    dbt_cloud_job = DbtCloudJob(
+        dbt_cloud_credentials=dbt_cloud_credentials, job_id=776963
+    )
+    return run_dbt_cloud_job(dbt_cloud_job=dbt_cloud_job)
