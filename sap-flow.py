@@ -10,11 +10,8 @@ from sap_tables import SAP_TABLES
 from prefect.variables import Variable
 
 # Azure Configuration
-
-AZURE_CONN = Variable.get("azure_connection")
-CONTAINER_NAME = Variable.get("container_name")
-USER = Variable.get("user")
-PASSWORD = Variable.get("password")
+AZURE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=bysapingestion;AccountKey=6aYk64jd0qnGOSjI0akLLmA3T6upacsNywRhqCtg8LsfFmZtDJwkpctHN64d5QbrBkOp1Y9UA/0h+ASt0lLMxA==;EndpointSuffix=core.windows.net"
+CONTAINER_NAME = "ingestionfiles"
 
 
 @task
@@ -60,7 +57,9 @@ def save_to_file(data: list, file_path: str):
 
 @task
 def upload_to_azure(file_path: str, blob_name: str):
-    blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONN)
+    blob_service_client = BlobServiceClient.from_connection_string(
+        AZURE_CONNECTION_STRING
+    )
     blob_client = blob_service_client.get_blob_client(
         container=CONTAINER_NAME, blob=blob_name
     )
@@ -83,7 +82,9 @@ def sap_ingestion_flow():
         # )
         # save_to_file(data, file_path)
         while has_more_data:
-            data = fetch_paginated_data(table["url"], USER, PASSWORD, skip, top)
+            data = fetch_paginated_data(
+                table["url"], "STUDENT006", "Hakkoda2025", skip, top
+            )
 
             if not data:
                 has_more_data = False
