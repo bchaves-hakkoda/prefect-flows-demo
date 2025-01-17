@@ -8,6 +8,7 @@ import os
 import time
 from sap_tables import SAP_TABLES
 
+
 # Azure Configuration
 AZURE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=bysapingestion;AccountKey=6aYk64jd0qnGOSjI0akLLmA3T6upacsNywRhqCtg8LsfFmZtDJwkpctHN64d5QbrBkOp1Y9UA/0h+ASt0lLMxA==;EndpointSuffix=core.windows.net"
 CONTAINER_NAME = "ingestionfiles"
@@ -76,10 +77,6 @@ def sap_ingestion_flow():
         top = 1000
         has_more_data = True
 
-        # data = fetch_paginated_data(
-        #     table["url"], "STUDENT006", "Hakkoda2025", skip, top
-        # )
-        # save_to_file(data, file_path)
         while has_more_data:
             data = fetch_paginated_data(
                 table["url"], "STUDENT006", "Hakkoda2025", skip, top
@@ -98,10 +95,7 @@ def sap_ingestion_flow():
 
 
 if __name__ == "__main__":
-    flow.from_source(
-        source="https://github.com/bchaves-hakkoda/prefect-flows-demo.git",
-        entrypoint="sap-flow.py:sap_ingestion_flow",
-    ).deploy(
-        name="SAP-ingestion-flow",
-        work_pool_name="BY-demo-worker",
+    sap_ingestion_flow.serve(
+        name="sap-ingestion",
+        tags=["onboarding"],
     )
