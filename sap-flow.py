@@ -7,7 +7,6 @@ import json
 import os
 import time
 from sap_tables import SAP_TABLES
-from prefect.variables import Variable
 
 # Azure Configuration
 AZURE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=bysapingestion;AccountKey=6aYk64jd0qnGOSjI0akLLmA3T6upacsNywRhqCtg8LsfFmZtDJwkpctHN64d5QbrBkOp1Y9UA/0h+ASt0lLMxA==;EndpointSuffix=core.windows.net"
