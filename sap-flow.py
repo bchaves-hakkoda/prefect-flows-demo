@@ -98,7 +98,10 @@ def sap_ingestion_flow():
 
 
 if __name__ == "__main__":
-    sap_ingestion_flow.serve(
-        name="sap-ingestion",
-        tags=["onboarding"],
+    flow.from_source(
+        source="https://github.com/bchaves-hakkoda/prefect-flows-demo.git",
+        entrypoint="sap-flow.py:sap_ingestion_flow",
+    ).deploy(
+        name="SAP-ingestion-flow",
+        work_pool_name="BY-demo-worker",
     )
